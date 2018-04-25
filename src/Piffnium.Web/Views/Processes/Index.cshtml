@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Piffnium.Repository.Abstraction.CompareResultItem>
+
+@{
+    ViewData["Title"] = "Process";
+}
+
+<div>
+    @foreach (var item in Model)
+    {
+        <article class="diffresult">
+            <header class="diffresult-header"><h1 class="diffresult-title">@item.Key</h1></header>
+            <section class="diffresult-images">
+                <div class="diffresult-image-container diffresult-expect">
+                    @if (item.HasExpect)
+                    {
+                        <img class="diffresult-image diffresult-image-expect" src="~/compared/@item.ProcessId/@(item.Key)/expect" />
+                    }
+                    else
+                    {
+                        <div class="diffresult-image diffresult-image-noimage">NO IMAGE</div>
+                    }
+                </div>
+
+                <div class="diffresult-image-container diffresult-diff">
+                    @if (item.HasDiff)
+                    {
+                        <img class="diffresult-image diffresult-image-diff" src="~/compared/@item.ProcessId/@(item.Key)/diff" />
+                    }
+                    else
+                    {
+                        <div class="diffresult-image diffresult-image-noimage">NO IMAGE</div>
+                    }
+                </div>
+
+                <div class="diffresult-image-container diffresult-actual">
+                    @if (item.HasActual)
+                    {
+                        <img class="diffresult-image diffresult-image-actual" src="~/compared/@item.ProcessId/@(item.Key)/actual" 
+                             data-piff-processId="@item.ProcessId"
+                             data-piff-key="@item.Key"/>
+                    }
+                    else
+                    {
+                        <div class="diffresult-image diffresult-image-noimage">NO IMAGE</div>
+                    }
+                </div>
+
+            </section>
+
+        </article>
+    }
+</div>
+
+@section Styles {
+<style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .diffresult {
+            width: 100%;
+        }
+        .diffresult-images {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+        }
+    .diffresult-image-container{
+        width: 33%;
+    }
+    .diffresult-image {
+        width: 100%;
+    }
+    .diffresult-image-noimage{
+        background-color: #5a5a5a;
+        color: white;
+        font-weight: bold;
+        padding: 4em 0;
+        text-align: center;
+        font-size: large;
+        border: solid 2px #7e7e7e;
+    }
+</style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            for (let elem of document.querySelectorAll(".diffresult-image-actual")) {
+                elem.addEventListener("dblclick", (e) => {
+                    //const noexpect = e.currentTarget.parentElement.querySelector(".diffresult-expect .diffresult-image-noimage");
+
+                    const processId = e.target.dataset.piffProcessid;
+                    const key = e.target.dataset.piffKey;
+
+                    if (!processId || !key) {
+                        return;
+
+                    }
+
+                    if (!confirm("この画像を Expect に設定しますか？")) {
+                        return;
+                    }
+
+                    const form = new FormData();
+                    form.append("processId", processId);
+                    form.append("key", key);
+
+                    fetch("/api/expect", {
+                        method: "POST",
+                        body: form
+                    }).then(res => {
+                        return res.text();
+                    }).then(txt => {
+                        console.log(txt);
+                    });
+
+                }, false);
+            }
+        });
+    </script>
+}

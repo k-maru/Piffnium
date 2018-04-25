@@ -1,0 +1,13 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <ul>
+        @foreach (var process in Model.Processes)
+        {
+            <li><a href="~/processes/@process.Id">@process.Id</a></li>
+        }
+    </ul>
+</div>
