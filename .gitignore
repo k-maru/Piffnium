@@ -11,3 +11,7 @@
 
 # node
 node_modules/
+
+# image repo
+/src/repository
+!/src/repository/expects
