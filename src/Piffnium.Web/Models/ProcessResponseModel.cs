@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Piffnium.Api.Model
+namespace Piffnium.Web.Models
 {
-    public class ProcessData
+    public class ProcessResponseModel
     {
         public int Id { get; set; }
+
     }
 }

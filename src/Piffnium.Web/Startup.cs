@@ -5,8 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Piffnium.Comparator.Abstraction;
+using Piffnium.Comparator.ImageSharp;
 using Piffnium.Repository.Abstraction;
 using Piffnium.Repository.FileSystem;
 
@@ -27,7 +30,7 @@ namespace Piffnium.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
 
             var repoDirectory = Path.Combine(this.Environment.ContentRootPath, "..\\repository");
             if (!Directory.Exists(repoDirectory))
@@ -40,6 +43,11 @@ namespace Piffnium.Web
                     RootDirectory = repoDirectory
                 })
             );
+            services.AddSingleton<IPictureComparatorFactory>(sv =>
+            {
+                return new PixelComparatorFactory();
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,13 +55,14 @@ namespace Piffnium.Web
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseHsts();
+            app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 

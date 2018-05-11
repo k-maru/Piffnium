@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Piffnium.Comparator.Abstraction;
+using Piffnium.Repository.Abstraction;
+using Piffnium.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Piffnium.Api.Model;
-using Piffnium.Comparator.Abstraction;
-using Piffnium.Repository.Abstraction;
 
-namespace Piffnium.Api.Controllers
+namespace Piffnium.Web.ApiControllers
 {
-    [Route("diff")]
+    [Route("api/diff")]
     public class DifferenceController : Controller
     {
         private readonly IPiffniumRepositoryFactory repoFactory;
@@ -43,7 +43,7 @@ namespace Piffnium.Api.Controllers
                     await processRepo.AddActualImageAsync(process, key, imageStream);
                 }
 
-                return Ok(new DifferenceData() { DifferenceRate = -1, Checked = false });
+                return Ok(new DifferenceResponseModel() { DifferenceRate = -1, Checked = false });
             }
 
             using (var actualStream = actual.OpenReadStream())
@@ -57,7 +57,7 @@ namespace Piffnium.Api.Controllers
                 await processRepo.AddExpectImageAsync(process, key, expectStream);
                 await processRepo.AddDiffImageAsync(process, key, compResult.DiffImage);
 
-                return Ok(new DifferenceData() { DifferenceRate = compResult.DifferenceRate, Checked = true });
+                return Ok(new DifferenceResponseModel() { DifferenceRate = compResult.DifferenceRate, Checked = true });
             }
         }
     }

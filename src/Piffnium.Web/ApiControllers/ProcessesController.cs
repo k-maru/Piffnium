@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Piffnium.Api.Model;
 using Piffnium.Repository.Abstraction;
+using Piffnium.Web.Models;
 
-namespace Piffnium.Api.Controllers
+namespace Piffnium.Web.ApiControllers
 {
-    [Route("processes")]
+    [Route("api/processes")]
     public class ProcessesController : Controller
     {
         private readonly IPiffniumRepositoryFactory repoFactory;
@@ -25,9 +24,9 @@ namespace Piffnium.Api.Controllers
             var procRepo = this.repoFactory.CreateProcessRepository();
             var procId = await procRepo.CreateAsync();
 
-            return Ok(new ProcessData()
+            return Ok(new ProcessResponseModel()
             {
-                Id = procId    
+                Id = procId
             });
         }
     }

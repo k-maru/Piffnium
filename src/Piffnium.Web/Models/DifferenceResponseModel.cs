@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Piffnium.Api.Model
+namespace Piffnium.Web.Models
 {
-    public sealed class DifferenceData
+    public class DifferenceResponseModel
     {
         public double DifferenceRate { get; set; }
 
