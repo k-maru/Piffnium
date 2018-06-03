@@ -17,7 +17,7 @@ namespace Piffnium.Repository.FileSystem
             return Path.Combine(rootDir, directoryName);
         }
 
-        public static string GetDirectoryNameWithRoot(this FsRepositoryOptions self, int numberdDirectoryName)
+        public static string GetDirectoryNameWithRoot(this FsRepositoryOptions self, long numberdDirectoryName)
         {
             return self.GetDirectoryNameWithRoot(numberdDirectoryName.ToString());
         }

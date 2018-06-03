@@ -38,7 +38,7 @@ namespace Piffnium.Repository.FileSystem
             }
         }
 
-        private async Task CreateProcessDirectoryAndMetadata(int processId)
+        private async Task CreateProcessDirectoryAndMetadata(long processId)
         {
             var di = Directory.CreateDirectory(this.options.GetDirectoryNameWithRoot(processId));
             using (var sw = new StreamWriter(Path.Combine(di.FullName, MetadataFileName)))
@@ -48,7 +48,7 @@ namespace Piffnium.Repository.FileSystem
             }
         }
 
-        public async Task<bool> ExistsAsync(int processId)
+        public async Task<bool> ExistsAsync(long processId)
         {
             return await Task.Run<bool>(() =>
             {
@@ -56,22 +56,22 @@ namespace Piffnium.Repository.FileSystem
             });
         }
 
-        public async Task AddActualImageAsync(int processId, string key, Stream image)
+        public async Task AddActualImageAsync(long processId, string key, Stream image)
         {
             await AddImageAsync(processId, key, ActualImageSuffix, image);
         }
 
-        public async Task AddExpectImageAsync(int processId, string key, Stream image)
+        public async Task AddExpectImageAsync(long processId, string key, Stream image)
         {
             await AddImageAsync(processId, key, ExpectImageSuffix, image);
         }
 
-        public async Task AddDiffImageAsync(int processId, string key, Stream image)
+        public async Task AddDiffImageAsync(long processId, string key, Stream image)
         {
             await AddImageAsync(processId, key, DiffImageSuffix, image);
         }
 
-        private async Task AddImageAsync(int processId, string key, string suffix, Stream image)
+        private async Task AddImageAsync(long processId, string key, string suffix, Stream image)
         {
             var fileName = $"{key}_{suffix}{FileExtension}";
             var fullName = Path.Combine(this.options.GetDirectoryNameWithRoot(processId), fileName);
@@ -105,7 +105,7 @@ namespace Piffnium.Repository.FileSystem
             });
         }
 
-        public async Task<IEnumerable<CompareResultItem>> GetAllResultsAsync(int processId)
+        public async Task<IEnumerable<CompareResultItem>> GetAllResultsAsync(long processId)
         {
             return await Task.Run(() =>
             {
@@ -132,22 +132,22 @@ namespace Piffnium.Repository.FileSystem
             });
         }
 
-        public async Task<Stream> GetExpectResult(int processId, string key)
+        public async Task<Stream> GetExpectResult(long processId, string key)
         {
             return await GetResultItem(processId, key, ExpectImageSuffix);
         }
 
-        public async Task<Stream> GetActualResult(int processId, string key)
+        public async Task<Stream> GetActualResult(long processId, string key)
         {
             return await GetResultItem(processId, key, ActualImageSuffix);
         }
 
-        public async Task<Stream> GetDiffResult(int processId, string key)
+        public async Task<Stream> GetDiffResult(long processId, string key)
         {
             return await GetResultItem(processId, key, DiffImageSuffix);
         }
 
-        private async Task<Stream> GetResultItem(int processId, string key, string suffix)
+        private async Task<Stream> GetResultItem(long processId, string key, string suffix)
         {
             return await Task.Run(() =>
             {

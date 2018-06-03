@@ -2,7 +2,7 @@
 {
     public class CompareResultItem
     {
-        public int ProcessId { get; set; }
+        public long ProcessId { get; set; }
 
         public string Key { get; set; }
 

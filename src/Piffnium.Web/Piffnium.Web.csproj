@@ -5,17 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0-rc1-final" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Piffnium.Comparator.ImageSharp\Piffnium.Comparator.ImageSharp.csproj" />
     <ProjectReference Include="..\Piffnium.Repository.FileSystem\Piffnium.Repository.FileSystem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

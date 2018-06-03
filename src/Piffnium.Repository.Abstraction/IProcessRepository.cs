@@ -9,22 +9,22 @@ namespace Piffnium.Repository.Abstraction
     {
         Task<int> CreateAsync();
 
-        Task<bool> ExistsAsync(int processId);
+        Task<bool> ExistsAsync(long processId);
 
-        Task AddActualImageAsync(int processId, string key, Stream image);
+        Task AddActualImageAsync(long processId, string key, Stream image);
 
-        Task AddExpectImageAsync(int processId, string key, Stream image);
+        Task AddExpectImageAsync(long processId, string key, Stream image);
 
-        Task AddDiffImageAsync(int processId, string key, Stream image);
+        Task AddDiffImageAsync(long processId, string key, Stream image);
 
         Task<IEnumerable<ProcessModel>> GetAllProcessesAsync();
 
-        Task<IEnumerable<CompareResultItem>> GetAllResultsAsync(int processId);
+        Task<IEnumerable<CompareResultItem>> GetAllResultsAsync(long processId);
 
-        Task<Stream> GetExpectResult(int processId, string key);
+        Task<Stream> GetExpectResult(long processId, string key);
 
-        Task<Stream> GetActualResult(int processId, string key);
+        Task<Stream> GetActualResult(long processId, string key);
 
-        Task<Stream> GetDiffResult(int processId, string key);
+        Task<Stream> GetDiffResult(long processId, string key);
     }
 }

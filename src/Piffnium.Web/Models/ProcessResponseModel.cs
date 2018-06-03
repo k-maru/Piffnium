@@ -7,7 +7,7 @@ namespace Piffnium.Web.Models
 {
     public class ProcessResponseModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
     }
 }

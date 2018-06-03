@@ -23,10 +23,10 @@ namespace Piffnium.Web.ApiControllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> CreateDifference([FromForm]int process, [FromForm]string key, [FromForm]IFormFile actual)
+        public async Task<IActionResult> CreateDifference([FromForm]long sessionId, [FromForm]string key, [FromForm]IFormFile actual)
         {
             var processRepo = this.repoFactory.CreateProcessRepository();
-            if (!await processRepo.ExistsAsync(process))
+            if (!await processRepo.ExistsAsync(sessionId))
             {
                 // TODO Error
                 return BadRequest();
@@ -40,7 +40,7 @@ namespace Piffnium.Web.ApiControllers
             {
                 using (var imageStream = actual.OpenReadStream())
                 {
-                    await processRepo.AddActualImageAsync(process, key, imageStream);
+                    await processRepo.AddActualImageAsync(sessionId, key, imageStream);
                 }
 
                 return Ok(new DifferenceResponseModel() { DifferenceRate = -1, Checked = false });
@@ -53,9 +53,9 @@ namespace Piffnium.Web.ApiControllers
                 var comparator = compFactory.CreateComparator();
                 var compResult = await comparator.CompareAsync(expectStream, actualStream);
 
-                await processRepo.AddActualImageAsync(process, key, actualStream);
-                await processRepo.AddExpectImageAsync(process, key, expectStream);
-                await processRepo.AddDiffImageAsync(process, key, compResult.DiffImage);
+                await processRepo.AddActualImageAsync(sessionId, key, actualStream);
+                await processRepo.AddExpectImageAsync(sessionId, key, expectStream);
+                await processRepo.AddDiffImageAsync(sessionId, key, compResult.DiffImage);
 
                 return Ok(new DifferenceResponseModel() { DifferenceRate = compResult.DifferenceRate, Checked = true });
             }

@@ -5,7 +5,7 @@ const FormData = require("form-data");
 (async() => {
     const width = 1200;
     const height = 740;
-    const svcurl = "http://localhost:60417/";
+    const svcurl = "http://localhost:50676/api/";
 
     const browser = await puppeteer.launch({
         headless: false
@@ -13,7 +13,7 @@ const FormData = require("form-data");
     const page = await browser.newPage();
     page.setViewport({width, height});
 
-    const response = await axios.post(`${svcurl}processes`);
+    const response = await axios.post(`${svcurl}sessions?pn=sampleproj`).catch(error => console.log(error));
     const processId = response.data.id;
 
     async function checkDifference(page, imagekey){
@@ -23,7 +23,7 @@ const FormData = require("form-data");
         });
     
         const form = new FormData();
-        form.append("process", processId);
+        form.append("sessionId", processId);
         form.append("key", imagekey);
         form.append("actual", image, {
             filepath: "image.jpg",
