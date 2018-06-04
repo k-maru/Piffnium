@@ -39,8 +39,7 @@ namespace Piffnium.Web
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            var dbContext = services.BuildServiceProvider().GetService<ApplicationDbContext>();
-            dbContext.Database.Migrate();
+            InitializeDatabase(services.BuildServiceProvider());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
 
@@ -86,6 +85,16 @@ namespace Piffnium.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        public static void InitializeDatabase(IServiceProvider service)
+        {
+            using (var serviceScope = service.CreateScope())
+            {
+                var scopeServiceProvider = serviceScope.ServiceProvider;
+                var db = scopeServiceProvider.GetService<ApplicationDbContext>();
+                db.Database.Migrate();
+            }
         }
     }
 }

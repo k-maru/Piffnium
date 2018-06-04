@@ -26,6 +26,7 @@ namespace Piffnium.Web.Infrastructure.EntityFramework
             modelBuilder.Entity<Project>(ConfigureProject);
             modelBuilder.Entity<Session>(ConfigureSession);
             modelBuilder.Entity<Comparison>(ConfigureComparison);
+            modelBuilder.Entity<Difference>(ConfigureDifferences);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -93,6 +94,33 @@ namespace Piffnium.Web.Infrastructure.EntityFramework
             builder.HasOne(c => c.Session)
                    .WithMany(s => s.Comparisons)
                    .HasForeignKey(c => c.SessionId)
+                   .OnDelete(DeleteBehavior.Restrict);
+        }
+
+        private void ConfigureDifferences(EntityTypeBuilder<Difference> builder)
+        {
+            builder.ToTable("Differences")
+                .HasKey(d => d.ComparisonId)
+                .HasName("pk_differences");
+
+            builder.Property(d => d.ComparisonId)
+                .IsRequired()
+                .ValueGeneratedNever();
+
+            builder.Property(d => d.DifferenceRate)
+                .IsRequired();
+
+            builder.Property(d => d.DifferenceFileName)
+                .IsRequired()
+                .IsUnicode();
+
+            builder.Property(d => d.SourceFileName)
+                .IsRequired()
+                .IsUnicode();
+
+            builder.HasOne(d => d.Comparison)
+                   .WithOne(c => c.Difference)
+                   .HasForeignKey<Difference>(d => d.ComparisonId)
                    .OnDelete(DeleteBehavior.Restrict);
         }
 
